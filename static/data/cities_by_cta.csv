@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Zone,City
 A9010,Shreveport
 A9013,Bossier City
@@ -12,3 +13,6 @@ A9034,Shreveport
 A9034,Greenwood
 A9038,Bossier City
 A9038,Red Chute
+=======
+ZoneIDOrig,City
+>>>>>>> cht-first-test

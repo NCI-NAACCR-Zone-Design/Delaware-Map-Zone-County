@@ -27,21 +27,35 @@ WEBSITE_URL = "https://www.example.com"
 
 # CTA Zones shapefile, and which fields to use from it
 INPUT_ZONESFILE = "./inputs/CTAZones.shp"
+<<<<<<< HEAD
 CTAZONES_SHAPEFILE_IDFIELD = "Zone"
 CTAZONES_SHAPEFILE_NAMEFIELD = "ZoneName"
 REPROJECTED_ZONESFILE = "./tempfiles/ctazones.shp"
+=======
+CTAZONES_SHAPEFILE_IDFIELD = "ZoneIDOrig"
+CTAZONES_SHAPEFILE_NAMEFIELD = "ZoneName"
+REPROJECTED_ZONESFILE = "./tempfiles/ctazones2.shp"
+>>>>>>> cht-first-test
 
 # Census Designated Places shapefile and the County shapefile
 # used for the CTA-to-City and CTA-to-County CSV lookup CSVs
 INPUT_COUNTYBOUNDS_SHP = "./inputs/counties.shp"
 COUNTYBOUNDS_IDFIELD = "COUNTYFP"
 COUNTYBOUNDS_NAMEFIELD = "NAME"
+<<<<<<< HEAD
 REPROJECTED_COUNTY_SHP = "./tempfiles/counties.shp"
+=======
+REPROJECTED_COUNTY_SHP = "./tempfiles/counties2.shp"
+>>>>>>> cht-first-test
 
 INPUT_CITYBOUNDS_SHP = "./inputs/cities.shp"
 CITYBOUNDS_IDFIELD = "PLACEFP"
 CITYBOUNDS_NAMEFIELD = "NAME"
+<<<<<<< HEAD
 REPROJECTED_CITY_SHP = "./tempfiles/cities.shp"
+=======
+REPROJECTED_CITY_SHP = "./tempfiles/cities2.shp"
+>>>>>>> cht-first-test
 
 # TopoJSON settings for simplifying, quantizing coordinates, and rounding coordiate decimals
 SIMPLIFY = "20%"
@@ -54,7 +68,12 @@ MAPSHAPER_CLI = "../node_modules/.bin/mapshaper"
 
 # choose a planar SRS which preserves area well, e.g. EPSG:3083 for Texas-centric AEA, or 3310 for California Teale-Albers
 # this is used for finding the area of intersection, for finding city/county overlaps to CTA Zones
+<<<<<<< HEAD
 PLANAR_SRS = "EPSG:3083"
+=======
+# PLANAR_SRS = "EPSG:3083"
+PLANAR_SRS = "EPSG:2235"
+>>>>>>> cht-first-test
 
 # and when reprojecting to a globe (lat-long) the SRS to use
 GLOBE_SRS = "EPSG:4326"

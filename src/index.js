@@ -13,7 +13,11 @@ require('./leaflet-singleclick.js');
 require('./printing-leaflet-easyPrint.js');
 
 
+<<<<<<< HEAD
 
+=======
+// test
+>>>>>>> cht-first-test
 //
 // CONSTANTS
 // for reasons unknown, can't use "const" here; Webpack 4...
@@ -21,13 +25,23 @@ require('./printing-leaflet-easyPrint.js');
 
 // the map and some constants
 var MAP;
+<<<<<<< HEAD
 var MAP_BBOX = [[32.092, -94.438], [33.146, -93.142]];  // [[s, w], [n, e]]
+=======
+// var MAP_BBOX = [[32.092, -94.438], [33.146, -93.142]];  // [[s, w], [n, e]]
+var MAP_BBOX = [[38.5268, -74.2317], [39.8108, -75.5277]];  // [[s, w], [n, e]] DELAWARE
+
+>>>>>>> cht-first-test
 
 var MIN_ZOOM = 6;
 var MAX_ZOOM = 15;
 
 // for the geocoder: our Bing API key
+<<<<<<< HEAD
 var BING_API_KEY = '';
+=======
+var BING_API_KEY = 'AqmUJHuT9QJE5A0m1Kf48g2vxBND3cJ0_jJI3jJQIv9oE11VIG9WZbhq2owRSUZK';
+>>>>>>> cht-first-test
 
 // URLs of our data files, storage for them in memory for filtering and querying, and raw copies for exporting
 var DATA_URL_CTAGEOM = 'static/data/cta.json';
@@ -37,6 +51,16 @@ var DATA_URL_CTACOUNTY = 'static/data/counties_by_cta.csv';
 var DATA_URL_CTACITY = 'static/data/cities_by_cta.csv';
 var DATA_URL_COUNTYGEOM = 'static/data/countybounds.json';
 
+<<<<<<< HEAD
+=======
+var DATA_URL_ZONEGEOM = 'static/data/cta.json';
+// var DATA_URL_COUNTYGEOM = 'static/data/testCounties.json';
+var DATA_URL_PLACEGEOM = 'static/data/testPlaces.json';
+
+
+
+
+>>>>>>> cht-first-test
 // the set of options for search filters: cancer site, race, and time period
 // each definition is the field value from the incidence CSV, mapped onto a human-readable label
 // remember that cancer site and sex and time period, are used to find a specific row in cancerincidence.csv
@@ -64,6 +88,12 @@ var SEARCHOPTIONS_CANCERSITE = [  // filter values for "cancer" field
     { value: 'Larynx', label: "Larynx Cancer" },
     { value: 'Ovary', label: "Ovarian Cancer" },
     { value: 'Esoph', label: "Esophagian Cancer" },
+<<<<<<< HEAD
+=======
+    { value: 'Cervix', label: "Cervix Uteri" },
+    { value: 'HL', label: "Hodgkin Lymphoma" },
+    { value: 'Testis', label: "Testis" },
+>>>>>>> cht-first-test
 ];
 var SEARCHOPTIONS_SEX = [  // filter values for "sex" field
     { value: 'Both', label: "All Sexes" },
@@ -71,13 +101,22 @@ var SEARCHOPTIONS_SEX = [  // filter values for "sex" field
     { value: 'Female', label: "Female" },
 ];
 var SEARCHOPTIONS_TIME = [  // filter values for "years" field
+<<<<<<< HEAD
     { value: '05yrs', label: "5-Year: 2011-2015" },
     { value: '10yrs', label: "10-Year: 2006-2015" },
+=======
+    { value: '05yrs', label: "5-Year: 2015-2019" },
+    { value: '10yrs', label: "10-Year: 2010-2019" },
+>>>>>>> cht-first-test
 ];
 var SEARCHOPTIONS_RACE = [  // field prefix for AAIR, LCI, UCI fields within the incidence row
     { value: '', label: "All Ethnicities" },
     { value: 'W', label: "Non-Hispanic White" },
     { value: 'B', label: "Non-Hispanic Black" },
+<<<<<<< HEAD
+=======
+    { value: 'H', label: "Hispanic" },
+>>>>>>> cht-first-test
 ];
 
 // if any of the cancer sites should apply to only one sex, you may define that here
@@ -88,7 +127,13 @@ var CANCER_SEXES = {
     'Breast': 'Female',
     'Uterine': 'Female',
     'Ovary': 'Female',
+<<<<<<< HEAD
     'Prostate': 'Male',
+=======
+    'Cervix': 'Female',
+    'Prostate': 'Male',
+    'Testis': 'Male',
+>>>>>>> cht-first-test
 };
 
 // the demographics and incidence readouts will show stats for the CTA Zone, as well as Statewide and Nationwide stats for comparison
@@ -115,25 +160,61 @@ var DEMOGRAPHIC_TABLES = [
         rows: [
             { field: 'TotalPop', label: "Total Population", format: 'integer', tooltip_id: undefined },
             { field: 'PctRural', label: "% Living in Rural Area", format: 'percent', tooltip_id: 'PctRural' },
+<<<<<<< HEAD
             { field: 'PctNoHealthIns', label: "% Without Health Insurance", format: 'percent', tooltip_id: 'PctNoHealthIns' },
             { field: 'PctBelowPov', label: "% Below Poverty", format: 'percent', tooltip_id: 'PctBelowPov' },
+=======
+>>>>>>> cht-first-test
         ],
     },
     {
         title: "Race & Ethnicity",
         rows: [
+<<<<<<< HEAD
             { field: 'PctMinority', label: "% Minority", format: 'percent', tooltip_id: 'PctMinority' },
+=======
+            { field: 'PctMinority', label: "% Minority (other than non-Hispanic White)", format: 'percent', tooltip_id: 'PctMinority' },
+>>>>>>> cht-first-test
             { field: 'PctHispanic', label: "% Hispanic", format: 'percent', tooltip_id: 'PctHispanic' },
             { field: 'PctBlackNH', label: "% Black (non-Hispanic)", format: 'percent', tooltip_id: 'PctBlackNH' },
         ],
     },
     {
+<<<<<<< HEAD
         title: "Education",
         rows: [
             { field: 'PctEducBch', label: "% With Bachelors Degree or Higher", format: 'percent', tooltip_id: 'PctEducBch' },
             { field: 'PctEducLHS', label: "% Did Not Finish High School", format: 'percent', tooltip_id: 'PctEducLHS' },
         ],
     },
+=======
+        title: "Income",
+        rows: [
+            // { field: 'PctBelowPov', label: "% Below Poverty", format: 'percent', tooltip_id: 'PctBelowPov' }, // cht comment out because not in data causes error
+            { field: 'Pct100Pov', label: "% Below Poverty", format: 'percent', tooltip_id: 'PctBelowPov' }, // field changed from PctBelowPov to Pct100Pov
+            { field: 'PctNoHealthIns', label: "% Without Health Insurance", format: 'percent', tooltip_id: 'PctNoHealthIns' },
+        ],
+    },
+    {
+        title: "Education",
+        rows: [
+            { field: 'PctEducBchPlus', label: "% With Bachelors Degree or Higher", format: 'percent', tooltip_id: 'PctEducBchPlus' },
+            { field: 'PctEducLHS', label: "% Did Not Finish High School", format: 'percent', tooltip_id: 'PctEducLHS' },
+        ],
+    },
+    {
+        title: "Disability Status",
+        rows: [
+            { field: 'PctDisabled', label: "% With a Disability", format: 'percent', tooltip_id: 'PctDisabled' }, // cht comment out because not in data causes error
+        ],
+    },
+    {
+        title: "Nativity in US",
+        rows: [
+            { field: 'Pct_forborn', label: "% Foreign Born", format: 'percent', tooltip_id: 'Pct_forborn' },
+        ],
+    },
+>>>>>>> cht-first-test
 ];
 
 // the Leaflet styles for those choropleth options defined in CHOROPLETH_OPTIONS below
@@ -142,8 +223,16 @@ var DEMOGRAPHIC_TABLES = [
 // then CHOROPLETH_STYLE_INCIDENCE and CHOROPLETH_STYLE_DEMOGRAPHIC are added to form the choropleth coloring
 // see performSearchMap() which calculates scoring and uses these color ramps, to implement the choropleth behavior
 var CHOROPLETH_STYLE_NODATA = { fillOpacity: 0.25, fillColor: '#cccccc', color: 'black', opacity: 0.2, weight: 1 };
+<<<<<<< HEAD
 
 var CHOROPLETH_BORDER_DEFAULT = { color: '#b3b3b3', opacity: 1, weight: 1, fill: false };
+=======
+// var CHOROPLETH_STYLE_NODATA = { fillOpacity: 0.25, fillColor: 'red', color: 'black', opacity: 0.2, weight: 1 };
+
+
+// var CHOROPLETH_BORDER_DEFAULT = { color: '#b3b3b3', opacity: 1, weight: 1, fill: false };
+var CHOROPLETH_BORDER_DEFAULT = { color: 'black', opacity: 1, weight: 1, fill: false };
+>>>>>>> cht-first-test
 var CHOROPLETH_BORDER_SELECTED = { color: '#293885', opacity: 1, weight: 5, fill: false };
 
 var CHOROPLETH_STYLE_INCIDENCE = {
@@ -172,6 +261,7 @@ var CHOROPLETH_OPTIONS = [
     { field: 'Cases', label: "Cases", format: 'integer', colorramp: CHOROPLETH_STYLE_INCIDENCE },
     { field: 'AAIR', label: "Incidence", format: 'float', colorramp: CHOROPLETH_STYLE_INCIDENCE },
     // demographic data; customize this to suit your preferences
+<<<<<<< HEAD
     { field: 'TotalPop', label: "Population", format: 'integer', colorramp: CHOROPLETH_STYLE_DEMOGRAPHIC },
     { field: 'PctMinority', label: "% Minority", format: 'percent', colorramp: CHOROPLETH_STYLE_DEMOGRAPHIC },
     { field: 'PctHispanic', label: "% Hispanic", format: 'percent', colorramp: CHOROPLETH_STYLE_DEMOGRAPHIC },
@@ -181,6 +271,25 @@ var CHOROPLETH_OPTIONS = [
 
 // the style to use for the MAP_LAYERS.county GeoJSON overlay
 var COUNTYBOUNDS_STYLE = { fill: false, color: 'black', weight: 2 };
+=======
+    { field: 'TotalPop', label: "Total Population", format: 'integer', colorramp: CHOROPLETH_STYLE_DEMOGRAPHIC },
+    { field: 'PctRural', label: "% Living in Rural Area", format: 'percent', colorramp: CHOROPLETH_STYLE_DEMOGRAPHIC },
+    { field: 'PctMinority', label: "% Minority (other than non-Hispanic White)", format: 'percent', colorramp: CHOROPLETH_STYLE_DEMOGRAPHIC },
+    { field: 'PctHispanic', label: "% Hispanic", format: 'percent', colorramp: CHOROPLETH_STYLE_DEMOGRAPHIC },
+    { field: 'PctBlackNH', label: "% Black (non-Hispanic)", format: 'percent', colorramp: CHOROPLETH_STYLE_DEMOGRAPHIC },
+    { field: 'PctRural', label: "% Living in Rural Area", format: 'percent', colorramp: CHOROPLETH_STYLE_DEMOGRAPHIC },
+    { field: 'PctNoHealthIns', label: "% Without Health Insurance", format: 'percent', colorramp: CHOROPLETH_STYLE_DEMOGRAPHIC },
+    { field: 'PctEducBchPlus', label: "% With Bachelors Degree or Higher", format: 'percent', colorramp: CHOROPLETH_STYLE_DEMOGRAPHIC },
+    { field: 'PctEducLHS', label: "% Did Not Finish High School", format: 'percent', colorramp: CHOROPLETH_STYLE_DEMOGRAPHIC },
+    { field: 'Pct100Pov', label: "% Below Poverty", format: 'percent', colorramp: CHOROPLETH_STYLE_DEMOGRAPHIC }, // cht comment out because not in data causes error
+    { field: 'PctDisabled', label: "% With a Disability", format: 'percent', colorramp: CHOROPLETH_STYLE_DEMOGRAPHIC }, // cht comment out because not in data causes error
+
+];
+
+// the style to use for the MAP_LAYERS.county GeoJSON overlay
+var COUNTYBOUNDS_STYLE = { fill: false, color: 'black', weight: 5 };
+var ZONEBOUNDS_STYLE = { fill: false, color: 'black', weight: 1 };
+>>>>>>> cht-first-test
 
 // map layers to be offered in the lower-right Map Layers control
 // we have some complicated desires for layer stacking, such as labels and streets (L.TileLayer raster tiles) showing above CTA Zones (L.GeoJSON paths in overlayPane)
@@ -212,6 +321,20 @@ var MAP_LAYERS = [
         layer: undefined,  // see initFixCountyOverlay() where we patch this in to become a L.GeoJSON layer, since that comes after startup promises but before initMap()
     },
     {
+<<<<<<< HEAD
+=======
+        id: 'zones',
+        label: "Zones",
+        checked: true,
+        layer: undefined,  // see initFixCountyOverlay() where we patch this in to become a L.GeoJSON layer, since that comes after startup promises but before initMap()
+    },
+    // {
+    //     id: 'places',
+    //     label: "Places",
+    //     layer: undefined,  // see initFixCountyOverlay() where we patch this in to become a L.GeoJSON layer, since that comes after startup promises but before initMap()
+    // },
+    {
+>>>>>>> cht-first-test
         id: 'streets',
         label: "Streets",
         layer: L.tileLayer('http://a.tile.stamen.com/toner-lines/{z}/{x}/{y}.png', {
@@ -295,21 +418,51 @@ $(document).ready(function () {
                 },
             });
         }),
+<<<<<<< HEAD
     ];
 
     Promise.all(waitforparsing).then(function (datasets) {
         // save these to the globals that we'll read/filter/display
         // then send them to postprocessing for data fixes
         CTATOPOJSONDATA = datasets[0];
+=======
+        new Promise(function(resolve) {
+            $.get(DATA_URL_ZONEGEOM, (data) => { resolve(data); }, 'json');
+        }),
+        new Promise(function(resolve) {
+            $.get(DATA_URL_PLACEGEOM, (data) => { resolve(data); }, 'json');
+        }),
+    ];
+
+    Promise.all(waitforparsing).then(function (datasets) {
+        console.log('datasets: ', datasets)
+        // save these to the globals that we'll read/filter/display
+        // then send them to postprocessing for data fixes
+        CTATOPOJSONDATA = datasets[0];
+        console.log('CTATOPOJSONDATA: ', CTATOPOJSONDATA)
+>>>>>>> cht-first-test
         COUNTYTOPOJSONDATA = datasets[1];
         DATA_DEMOGS = datasets[2];
         DATA_CANCER = datasets[3];
         DATA_CTACOUNTY = datasets[4];
+<<<<<<< HEAD
         DATA_CTACITY = datasets[5];
+=======
+        console.log('DATA_CTACOUNTY: ', DATA_CTACOUNTY)
+        DATA_CTACITY = datasets[5];
+        ZONETOPOJSONDATA = datasets[6];
+        console.log('ZONETOPOJSONDATA: ', ZONETOPOJSONDATA)
+        PlaceTOPOJSONDATA = datasets[7];
+>>>>>>> cht-first-test
 
         initValidateDemographicDataset();
         initValidateIncidenceDataset();
         initFixCountyOverlay();
+<<<<<<< HEAD
+=======
+        initFixZoneOverlay();
+        // initFixPlaceOverlay();
+>>>>>>> cht-first-test
 
         // and we can finally get started!
         initDemographicTables();
@@ -559,6 +712,27 @@ function initFixCountyOverlay () {
     });
 }
 
+<<<<<<< HEAD
+=======
+function initFixZoneOverlay () {
+    const maplayerinfo = MAP_LAYERS.filter(function (maplayerinfo) { return maplayerinfo.id == 'zones'; })[0];
+    maplayerinfo.layer = L.topoJson(ZONETOPOJSONDATA, {
+        pane: 'tooltipPane',
+        zIndex: 500,
+        style: ZONEBOUNDS_STYLE,  // see performSearchMap() where these are reassigned based on filters
+    });
+}
+
+// function initFixPlaceOverlay () {
+//     const maplayerinfo = MAP_LAYERS.filter(function (maplayerinfo) { return maplayerinfo.id == 'places'; })[0];
+//     maplayerinfo.layer = L.topoJson(PlaceTOPOJSONDATA, {
+//         pane: 'tooltipPane',
+//         zIndex: 500,
+//         style: COUNTYBOUNDS_STYLE,  // see performSearchMap() where these are reassigned based on filters
+//     });
+// }
+
+>>>>>>> cht-first-test
 
 function initPrintPage () {
     // with a map it's never simple to change sizes, and with them in table cells side-by-side it's even weirder
@@ -1017,6 +1191,10 @@ function initGoogleAnalyticsHooks () {
 //
 
 function performSearch () {
+<<<<<<< HEAD
+=======
+    console.log('performseach called')
+>>>>>>> cht-first-test
     // clear these validation and markers; we may put them back in just a moment
     toggleAddressSearchFailure(false);
     MAP.addressmarker.setLatLng([0, 0]).removeFrom(MAP);
@@ -1030,7 +1208,11 @@ function performSearch () {
     // get the search params so we can filter to the specific row
     // if we have an address to geocode, then do that as well
     const params = compileParams();
+<<<<<<< HEAD
 
+=======
+    console.log('params: ', params)
+>>>>>>> cht-first-test
     // the CTA ID and CTA Name are figured here, since we need to find the CTA just to proceed to performSearchReally()
     // may as well just capture it here and include it into the searchparams
     params.ctaid = 'Statewide';
@@ -1040,6 +1222,11 @@ function performSearch () {
         // the address may be a latlng string, or a CTA ID, or a CTA ID buried inside a longer string, ... or maybe even an address!
         const isctaid = params.address.match(/^\s*((A|B)\d\d\d\d)\s*$/);
         const conainsctaid = params.address.match(/\(((A|B)\d\d\d\d)\)/);
+<<<<<<< HEAD
+=======
+        console.log('isctaid', isctaid)
+        console.log('conainsctaid', conainsctaid)
+>>>>>>> cht-first-test
 
         if (isctaid || conainsctaid) {
             // this isn't an address but a CTA ID; search for it, then do simialrly to what we would do for an address hit
@@ -1051,6 +1238,10 @@ function performSearch () {
                 params.ctaid = cta.feature.properties.Zone;
                 params.ctaname = cta.feature.properties.ZoneName.replace(/\_\d+$/, '');  // trim off the end
                 params.bbox = causedbyaddresschange ? cta.getBounds() : null;
+<<<<<<< HEAD
+=======
+                console.log('params if cta: ', params)
+>>>>>>> cht-first-test
                 performSearchReally(params);
             }
             else {
@@ -1061,16 +1252,30 @@ function performSearch () {
         else {
             // some other address (including latlng, whch Bing just returns instantly), I guess go ahead and geocode it
             geocodeAddress(params.address, function (latlng) {
+<<<<<<< HEAD
                 if (! latlng) return toggleAddressSearchFailure('Could not find that address');
 
+=======
+                console.log('params if geocodeAddress: ', params)
+                if (! latlng) return toggleAddressSearchFailure('Could not find that address');
+                console.log('latlng: ', latlng)
+>>>>>>> cht-first-test
                 // find the CTA containing this point, if any
                 // if there isn't one, a popup alert is super annoying; we have a special UI thing when that happens
                 const searchlatlng = [ latlng[0], latlng[1] ];
                 const cta = findCTAContainingLatLng(searchlatlng);
+<<<<<<< HEAD
 
                 if (cta) {
                     // now do the search
                     params.ctaid = cta.feature.properties.Zone;
+=======
+                console.log('cta: ', cta)
+                if (cta) {
+                    // now do the search
+                    // params.ctaid = cta.feature.properties.Zone;
+                    params.ctaid = cta.feature.properties.ZoneIDOrig;
+>>>>>>> cht-first-test
                     params.ctaname = cta.feature.properties.ZoneName.replace(/\_\d+$/, '');  // trim off the end
                     params.latlng = searchlatlng;
                     params.bbox = causedbyaddresschange ? cta.getBounds() : null;
@@ -1166,6 +1371,10 @@ function performSearchShowFilters (searchparams) {
 
 
 function performSearchDemographics (searchparams) {
+<<<<<<< HEAD
+=======
+    console.log('searchparams: ', searchparams)
+>>>>>>> cht-first-test
     // distill demographic data for the selected CTA
     // ths has no connection to the cancer dataset at all
     // see DEMOGRAPHIC_TABLES and initDemographicTables() which created these tables during setup
@@ -1223,13 +1432,23 @@ function performSearchDemographics (searchparams) {
 
 
 function performSearchPlaces (searchparams) {
+<<<<<<< HEAD
+=======
+    console.log('performSearchPlaces searchparams: ', searchparams)
+>>>>>>> cht-first-test
     // fetch a list of places (cities and counties) in the selected CTA, display it into its list(s)
 
     // statewide, we don't display a list at all; bail
     if (searchparams.ctaid == 'Statewide') return;
 
     // find the cities and counties here from our preared data
+<<<<<<< HEAD
     const counties = DATA_CTACOUNTY.filter(row => row.Zone == searchparams.ctaid).map(row => `${row.County} County`);
+=======
+    console.log('DATA_CTACOUNTY: ', DATA_CTACOUNTY)
+    const counties = DATA_CTACOUNTY.filter(row => row.Zone == searchparams.ctaid).map(row => `${row.County} County`);
+    console.log('counties: ', counties)
+>>>>>>> cht-first-test
     const cities = DATA_CTACITY.filter(row => row.Zone == searchparams.ctaid).map(row => row.City);
     counties.sort();
     cities.sort();
@@ -1528,7 +1747,13 @@ function performSearchMap (searchparams) {
 
     // highlight the selected CTA
     MAP.ctapolygonbounds.eachLayer((layer) => {
+<<<<<<< HEAD
         const ctaid = layer.feature.properties.Zone;
+=======
+        // console.log('layer.feature.properties', layer.feature.properties)
+        // const ctaid = layer.feature.properties.Zone;
+        const ctaid = layer.feature.properties.ZoneIDOrig;
+>>>>>>> cht-first-test
         const istheone = ctaid == searchparams.ctaid;
 
         if (istheone) {
@@ -1625,7 +1850,12 @@ function performSearchMap (searchparams) {
 
     // assign the color/style to each CTA Zone polygon
     MAP.ctapolygonfills.eachLayer((layer) => {
+<<<<<<< HEAD
         const ctaid = layer.feature.properties.Zone;
+=======
+        // const ctaid = layer.feature.properties.Zone;
+        const ctaid = layer.feature.properties.ZoneIDOrig;
+>>>>>>> cht-first-test
         const score = ctascores[ctaid];
 
         let style;
@@ -1758,7 +1988,11 @@ function updateUrlParams () {
 function findCTAContainingLatLng (inputlatlng) {
     // accept a [lat,lng] or a L.LatLng, and standardize on one... let's go with L.LatLng object
     const latlng = inputlatlng.hasOwnProperty('length') ? L.latLng(inputlatlng[0], inputlatlng[1]) : inputlatlng;
+<<<<<<< HEAD
 
+=======
+    console.log('latlng in find: ', latlng)
+>>>>>>> cht-first-test
     // yay Leaflet-PIP
     const containingcta = leafletPip.pointInLayer(latlng, MAP.ctapolygonfills);
 
@@ -1768,7 +2002,13 @@ function findCTAContainingLatLng (inputlatlng) {
 
 function findCTAById (ctaid) {
     const targetcta = MAP.ctapolygonfills.getLayers().filter(function (layer) {
+<<<<<<< HEAD
         return layer.feature.properties.Zone == ctaid;
+=======
+        // return layer.feature.properties.Zone == ctaid;
+        return layer.feature.properties.ZoneIDOrig == ctaid;
+
+>>>>>>> cht-first-test
     });
     return targetcta[0];
 }
