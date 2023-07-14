@@ -10,6 +10,8 @@ import settings
 class PlacesIntersector:
     def run(self):
         print("PlacesIntersector")
+        print(settings)
+        print(settings.INPUT_ZONESFILE)
 
         self.reproject(settings.INPUT_ZONESFILE, settings.REPROJECTED_ZONESFILE, settings.CTAZONES_SHAPEFILE_IDFIELD, settings.CTAZONES_SHAPEFILE_NAMEFIELD)
         self.reproject(settings.INPUT_CITYBOUNDS_SHP, settings.REPROJECTED_CITY_SHP, settings.CITYBOUNDS_IDFIELD, settings.CITYBOUNDS_NAMEFIELD)
@@ -47,7 +49,8 @@ class PlacesIntersector:
         ctalayer = ctads.GetLayer(0)
 
         for cta in ctalayer:
-            ctaid = cta.GetField('id')
+            # ctaid = cta.GetField('id')
+            ctaid = cta.GetField('Zone')
             ctageom = cta.GetGeometryRef()
 
             places = []
