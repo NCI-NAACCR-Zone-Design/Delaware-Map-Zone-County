@@ -13,8 +13,6 @@ require('./leaflet-singleclick.js');
 require('./printing-leaflet-easyPrint.js');
 
 
-// test
-//
 // CONSTANTS
 // for reasons unknown, can't use "const" here; Webpack 4...
 //
@@ -32,36 +30,17 @@ var MAX_ZOOM = 15;
 var BING_API_KEY = 'AqmUJHuT9QJE5A0m1Kf48g2vxBND3cJ0_jJI3jJQIv9oE11VIG9WZbhq2owRSUZK';
 
 // URLs of our data files, storage for them in memory for filtering and querying, and raw copies for exporting
-var DATA_URL_CTAGEOM = 'static/data/cta.json';
-// Old Cancer Incidence
-// var DATA_URL_CANCER = 'static/data/cancerincidence.csv';
-// var DATA_URL_CANCER = 'static/data/zone_cancer_incidence.csv';
-// New Cancer Incidences
-// var NEW_ZONE_CANCER = 'static/data/zone_cancer_incidence.csv';
-// var NEW_COUNTY_CANCER = 'static/data/county_cancer_incidence.csv';
-// var NEW_STATE_CANCER = 'static/data/state_cancer_incidence.csv';
-// var NEW_USA_CANCER = 'static/data/usa_cancer_incidence.csv';
-// var array_all_cancer = [NEW_ZONE_CANCER, NEW_COUNTY_CANCER, NEW_STATE_CANCER, NEW_USA_CANCER]
-// for(let i = 1; i < array_all_cancer.length; i++) {
-//     const [, ...spl] = array_all_cancer[i].split("\n");
-//     // instead of doing [, ...spl] we could also call: spl.shift();
-//     array_all_cancer[i] = spl.join("\n");
-//   }
-
+// These are you main two sets of data to use. You provide this data of the cancer and cancer demographic information for your State or District
 var DATA_URL_CANCER = 'static/data/allCancerRatesData.csv';
-
-// var DATA_URL_DEMOGS = 'static/data/demographics.csv';
 var DATA_URL_DEMOGS = 'static/data/allDemographics.csv';
-var DATA_URL_CTACOUNTY = 'static/data/counties_by_cta.csv';
-var DATA_URL_CTACITY = 'static/data/cities_by_cta.csv';
-var DATA_URL_COUNTYGEOM = 'static/data/countybounds.json';
 
-var DATA_URL_ZONEGEOM = 'static/data/cta.json';
-// var DATA_URL_COUNTYGEOM = 'static/data/testCounties.json';
-var DATA_URL_PLACEGEOM = 'static/data/testPlaces.json';
+// These are the JSON files used for the maps and creating the CTACOUNTY and CTACITY files. These files are updated by running the python scripts
+var DATA_URL_CTAGEOM = 'static/data/cta.json'; // zones
+var DATA_URL_COUNTYGEOM = 'static/data/countybounds.json'; // counties
 
-
-
+// These files are updated by running the python scripts
+var DATA_URL_CTACITY = 'static/data/cities_by_cta.csv'; // zones
+var DATA_URL_CTACOUNTY = 'static/data/counties_by_cta.csv'; // counties
 
 // the set of options for search filters: cancer site, race, and time period
 // each definition is the field value from the incidence CSV, mapped onto a human-readable label
@@ -317,6 +296,24 @@ var GEOCODE_CACHE = {};
 //
 // INIT
 //
+var main = {}
+// main.stateName = "Delaware"
+// main.numOfCancerSites = "25"
+// main.numOfZones = "14"
+// main.minZonePop = "50,000"
+// main.maxZonePop = "150,000"
+// main.minTractsPerZone = "1,000"
+// main.maxTractsPerZone = "100,000"
+// main.raceList = [ "non-Hispanic White", "non-Hispanic Black", "non-Hispanic Asian/Pacific Islander", "non-Hispanic American Indian/Alaska Native", "Hispanic"]
+// main.reportingMinCases = "1000"
+// main.registry = "test"
+// main.registryLink = "https://www.google.com"
+// main.fundingSource = "This is supported through funding"
+// main.citationInfo = "This is where you put your citation info"
+// main.nationalCancerDataSource = "this is your national cancer data source info"
+// main.aboutBlurb = "This is your about blurb"
+
+main.ctaid = 10 // starting state for site to start up
 
 $(document).ready(function () {
     // promises, a much nicer way to fetch, fetch, fetch
@@ -371,38 +368,36 @@ $(document).ready(function () {
                 },
             });
         }),
-        new Promise(function(resolve) {
-            $.get(DATA_URL_ZONEGEOM, (data) => { resolve(data); }, 'json');
-        }),
-        new Promise(function(resolve) {
-            $.get(DATA_URL_PLACEGEOM, (data) => { resolve(data); }, 'json');
-        }),
     ];
 
     Promise.all(waitforparsing).then(function (datasets) {
-        console.log('datasets: ', datasets)
         // save these to the globals that we'll read/filter/display
         // then send them to postprocessing for data fixes
         CTATOPOJSONDATA = datasets[0];
-        console.log('CTATOPOJSONDATA: ', CTATOPOJSONDATA)
         COUNTYTOPOJSONDATA = datasets[1];
         DATA_DEMOGS = datasets[2];
         DATA_CANCER = datasets[3];
-        console.log('DATA_CANCER', DATA_CANCER)
         DATA_CTACOUNTY = datasets[4];
-        console.log('DATA_CTACOUNTY: ', DATA_CTACOUNTY)
         DATA_CTACITY = datasets[5];
-        ZONETOPOJSONDATA = datasets[6];
-        console.log('ZONETOPOJSONDATA: ', ZONETOPOJSONDATA)
-        PlaceTOPOJSONDATA = datasets[7];
-
+        initRenameState(main.stateName);
+        initNumberOfCancerSites(main.numOfCancerSites);
+        initNumberOfZones(main.numOfZones);
+        initMinZonePop(main.minZonePop);
+        initMaxZonePop(main.maxZonePop);
+        initMinTractsPerZone(main.minTractsPerZone);
+        initMaxTractsPerZone(main.maxTractsPerZone);
+        initRaceList(main.raceList);
+        initReportingMinCases(main.reportingMinCases);
+        initStateRegistry(main.registry, main.registryLink);
+        initFundingSource(main.fundingSource);
+        initCitationInfo(main.citationInfo);
+        initNationalCancerDataSourceInfo(main.nationalCancerDataSource);
+        initAboutBlurb(main.aboutBlurb);
         initValidateDemographicDataset();
         initValidateIncidenceDataset();
         initFixCountyOverlay();
         initFixZoneOverlay();
         // initFixPlaceOverlay();
-
-        // and we can finally get started!
         initDemographicTables();
         initMapAndPolygonData();
         initDataFilters();
@@ -412,7 +407,6 @@ $(document).ready(function () {
         initFaqAccordion();
         initGoogleAnalyticsHooks();
         initTermsOfUse();
-
         initLoadInitialState();
         performSearch();
         initUrlParamUpdater();
@@ -426,6 +420,175 @@ function initUrlParamUpdater () {
     }, 1 * 1000);
 }
 
+function initRenameState(name) {
+    // Find all elements with class "stateName"
+    const elements = document.querySelectorAll('.stateName');
+
+    // Iterate through each element
+    if (name){
+   
+    elements.forEach(element => {
+            element.innerText = name;
+    });
+    }
+}
+
+function initNumberOfCancerSites(num) {
+    // Find all elements with class "stateName"
+    const elements = document.querySelectorAll('.numOfCancerSites');
+
+    // Iterate through each element
+    if (num){
+    elements.forEach(element => {
+            element.innerText = num;
+    });
+    }
+}
+
+function initNumberOfZones(num) {
+    // Find all elements with class "stateName"
+    const elements = document.querySelectorAll('.numZones');
+
+    // Iterate through each element
+    if (num){
+    elements.forEach(element => {
+            element.innerText = num;
+    });
+}
+}
+
+function initMinZonePop(num) {
+    // Find all elements with class "stateName"
+    const elements = document.querySelectorAll('.minZonePop');
+
+    // Iterate through each element
+    if (num){
+    elements.forEach(element => {
+            element.innerText = num;
+    });
+}
+}
+
+function initMaxZonePop(num) {
+    // Find all elements with class "stateName"
+    const elements = document.querySelectorAll('.maxZonePop');
+
+    // Iterate through each element
+    if (num){
+    elements.forEach(element => {
+            element.innerText = num;
+    });
+}
+}
+
+function initMinTractsPerZone(num) {
+    // Find all elements with class "stateName"
+    const elements = document.querySelectorAll('.minTractsPerZone');
+
+    // Iterate through each element
+    if (num){
+    elements.forEach(element => {
+            element.innerText = num;
+    });
+}
+}
+
+function initMaxTractsPerZone(num) {
+    // Find all elements with class "stateName"
+    const elements = document.querySelectorAll('.maxTractsPerZone');
+
+    // Iterate through each element
+    if (num){
+    elements.forEach(element => {
+            element.innerText = num;
+    });
+}
+}
+
+function initRaceList(list) {
+    // Find all elements with class "stateName"
+    const elements = document.querySelectorAll('.confirmRaceList');
+
+    // Iterate through each element
+    if (list){
+    elements.forEach(element => {
+            element.innerText = list.slice(0, -1).join(', ') + ', and ' + list[list.length - 1];
+    });
+}
+}
+
+function initReportingMinCases(num) {
+    // Find all elements with class "stateName"
+    const elements = document.querySelectorAll('.reportingMinCases');
+
+    // Iterate through each element
+    if (num){
+    elements.forEach(element => {
+            element.innerText = num;
+    });
+}
+}
+
+function initStateRegistry(registry, link) {
+    // Find all elements with class "stateName"
+    const elements = document.querySelectorAll('.stateRegistry');
+
+    // Iterate through each element
+    if (registry && link){
+    elements.forEach(element => {
+            element.innerText = registry;
+            element.parentElement.href = link;
+    });
+}
+}
+
+function initFundingSource(text) {
+    // Find all elements with class "stateName"
+    const elements = document.querySelectorAll('.fundingSource');
+
+    // Iterate through each element
+    if (text){
+    elements.forEach(element => {
+            element.innerText = text;
+    });
+}
+}
+
+function initCitationInfo(text) {
+    // Find all elements with class "stateName"
+    const elements = document.querySelectorAll('.citationInfo');
+
+    // Iterate through each element
+    if (text){
+    elements.forEach(element => {
+            element.innerText = text;
+    });
+}
+}
+
+function initNationalCancerDataSourceInfo(text) {
+    // Find all elements with class "stateName"
+    const elements = document.querySelectorAll('.nationalCancerDataSource');
+
+    // Iterate through each element
+    if (text){
+    elements.forEach(element => {
+            element.innerText = text;
+    });
+}
+}
+
+function initAboutBlurb(text) {
+    // Find all elements with class "stateName"
+    const elements = document.querySelectorAll('.aboutBlurb');
+
+    // Iterate through each element
+    if (text){
+    elements.forEach(element => {
+            element.innerText = text;
+    });
+}
+}
 
 function initLoadInitialState () {
     const $searchwidgets = $('div.data-filters input[type="text"], div.data-filters select');
@@ -566,7 +729,7 @@ function initValidateIncidenceDataset () {
                     });
                     const hasstatewide = matchesthiscombo.filter(function (row) {
                         // return row.GeoID == 'Statewide';
-                        return row.GeoID == '10';
+                        return row.GeoID == main.ctaid;
                     });
                     if (! matchesthiscombo.length) errors.push(`No data rows would match ${timeoption.value}/${siteoption.value}/${sexoption.value}`);
                     else if (! hasstatewide.length) errors.push(`No Statewide data rows for ${timeoption.value}/${siteoption.value}/${sexoption.value}`);
@@ -615,7 +778,7 @@ function initValidateDemographicDataset () {
     // there should be as many Statewide demographics rows as there are options in SEARCHOPTIONS_TIME; that is, one per time period
     // same goes for Nationwide: 1 per time period
     if (DATA_DEMOGS[0].GeoID) {
-        const hasstatewide = DATA_DEMOGS.filter(function (row) { return row.GeoID == '10'; });
+        const hasstatewide = DATA_DEMOGS.filter(function (row) { return row.GeoID == main.ctaid; });
         if (hasstatewide.length != SEARCHOPTIONS_TIME.length) errors.push(`Found ${hasstatewide.length} demographic rows for Statewide`);
 
         if (NATIONWIDE_DEMOGRAPHICS) {
@@ -653,7 +816,7 @@ function initFixCountyOverlay () {
 
 function initFixZoneOverlay () {
     const maplayerinfo = MAP_LAYERS.filter(function (maplayerinfo) { return maplayerinfo.id == 'zones'; })[0];
-    maplayerinfo.layer = L.topoJson(ZONETOPOJSONDATA, {
+    maplayerinfo.layer = L.topoJson(CTATOPOJSONDATA, {
         pane: 'tooltipPane',
         zIndex: 500,
         style: ZONEBOUNDS_STYLE,  // see performSearchMap() where these are reassigned based on filters
@@ -1161,8 +1324,10 @@ function performSearch () {
     console.log('params: ', params)
     // the CTA ID and CTA Name are figured here, since we need to find the CTA just to proceed to performSearchReally()
     // may as well just capture it here and include it into the searchparams
-    params.ctaid = '10';
-    params.ctaname = 'Delaware';
+    // params.ctaid = '10';
+    // params.ctaname = 'Delaware';
+    params.ctaid = main.ctaid;
+    params.ctaname = main.stateName;
     if (params.address) {
         // address search can never be easy  :)
         // the address may be a latlng string, or a CTA ID, or a CTA ID buried inside a longer string, ... or maybe even an address!
@@ -1279,9 +1444,9 @@ function performSearchShowFilters (searchparams) {
     {
         if (searchparams.type == "Zone"){
          
-        let text = searchparams.ctaname == '10' ? searchparams.ctaname : `${searchparams.ctaname} (${searchparams.ctaid})`;
+        let text = searchparams.ctaname == main.ctaid ? searchparams.ctaname : `${searchparams.ctaname} (${searchparams.ctaid})`;
         const $box = $('<span data-filter="address"></span>').text(text).appendTo($filtersummary);
-        if (searchparams.ctaname != '10') {
+        if (searchparams.ctaname != main.ctaid) {
             $box.prop('tabindex', '0').addClass('data-filter-clear').append('<div class="summary-close"><i class="fa fa-times noprint" tabindex="0" aria-label="Click to clear this filter"></i></div>');
         }
         } else {
@@ -1343,7 +1508,7 @@ function performSearchDemographics (searchparams) {
     }
     
     
-    const demogdata_state = DATA_DEMOGS.filter(function (row) { return row.GeoID == '10' && row.Years == searchparams.time; })[0];
+    const demogdata_state = DATA_DEMOGS.filter(function (row) { return row.GeoID == main.ctaid && row.Years == searchparams.time; })[0];
     const demogdata_nation = DATA_DEMOGS.filter(function (row) { return row.GeoID == 'US' && row.Years == searchparams.time; })[0];
     console.log('demogdata_state: ', demogdata_state)
     console.log('demogdata_nation: ', demogdata_nation)
@@ -1352,7 +1517,7 @@ function performSearchDemographics (searchparams) {
     const $nationstats = $demographics_section.find('[data-region="nation"]');
 
     // show/hide the CTA Zone content, depending whether a CTA Zone was selected (that is, not Statewide)
-    if (searchparams.ctaid == '10') {
+    if (searchparams.ctaid == main.ctaid) {
         $ctastats.hide();
     }
     else {
@@ -1373,7 +1538,7 @@ function performSearchDemographics (searchparams) {
         const counties = DATA_CTACOUNTY.filter(row => row.ZoneIDOrig == searchparams.ctaid).map(row => `${row.County} County`);
         ctanametext = counties[0]
     }
-    const ctaidtext = searchparams.ctaid == '10' ? '' : `(${demogdata_cta.GeoID})`;
+    const ctaidtext = searchparams.ctaid == main.ctaid ? '' : `(${demogdata_cta.GeoID})`;
     $demographics_section.find('span[data-statistics="ctaname"]').text(ctanametext);
     // $demographics_section.find('span[data-statistics="ctaid"]').text(ctaidtext);
     $demographics_section.find('span[data-statistics="ctaname"]').closest('span.subtitle').prop('aria-label', ctanametext + ' ' + ctaidtext);
@@ -1406,7 +1571,7 @@ function performSearchPlaces (searchparams) {
     // fetch a list of places (cities and counties) in the selected CTA, display it into its list(s)
 
     // statewide, we don't display a list at all; bail
-    if (searchparams.ctaid == '10') return;
+    if (searchparams.ctaid == main.ctaid) return;
 
     // find the cities and counties here from our preared data
     console.log('DATA_CTACOUNTY: ', DATA_CTACOUNTY)
@@ -1454,7 +1619,7 @@ function performSearchIncidenceReadout (searchparams) {
         cancerdata_cta = cancerdata_county
     }
 
-    const cancerdata_state = DATA_CANCER.filter(row => row.GeoID == '10' && row.Years == searchparams.time && row.Cancer == searchparams.site && row.Sex == searchparams.sex)[0];
+    const cancerdata_state = DATA_CANCER.filter(row => row.GeoID == main.ctaid && row.Years == searchparams.time && row.Cancer == searchparams.site && row.Sex == searchparams.sex)[0];
     const cancerdata_nation = DATA_CANCER.filter(row => row.GeoID == 'US' && row.Years == searchparams.time && row.Cancer == searchparams.site && row.Sex == searchparams.sex)[0];
 
     let cta_lci, cta_uci, cta_aair;
@@ -1542,7 +1707,7 @@ function performSearchIncidenceReadout (searchparams) {
     }
 
     // show/hide the CTA columns (well, actually, each individual cell)
-    if (searchparams.ctaid == '10') {
+    if (searchparams.ctaid == main.ctaid) {
         $('#incidence-readouts [data-region="cta"]').hide();
     }
     else {
@@ -1585,7 +1750,7 @@ function performSearchIncidenceReadout (searchparams) {
     //maxuci *= 1.2;  // but if course, this REALLY broadens the range a bit too much
 
     updateCandleChart($candlechart_cta, 'Selected Area', cta_aair, cta_lci, cta_uci, minlci, maxuci);
-    updateCandleChart($candlechart_state, '10', state_aair, state_lci, state_uci, minlci, maxuci);
+    updateCandleChart($candlechart_state, main.ctaid, state_aair, state_lci, state_uci, minlci, maxuci);
     updateCandleChart($candlechart_nation, 'US', nation_aair, nation_lci, nation_uci, minlci, maxuci);
 }
 
@@ -1797,7 +1962,7 @@ function performSearchMap (searchparams) {
     if (['Cases', 'AAIR'].indexOf(rankthemby) != -1) {  // the special case for AAIR/Cases incidence data
         DATA_CANCER
         .filter(row => row.GeoID != 'US')
-        .filter(row => row.GeoID != '10')
+        .filter(row => row.GeoID != main.ctaid)
         .filter(row => row.Years == searchparams.time && row.Cancer == searchparams.site && row.Sex == searchparams.sex)
         .forEach((row) => {
             let choropleth_score;
@@ -1815,7 +1980,7 @@ function performSearchMap (searchparams) {
     else {  // demographic data
         DATA_DEMOGS
         .filter(row => row.GeoID != 'US')
-        .filter(row => row.GeoID != '10')  // only 1 demog row per CTZ Zone, so only filtering is Not Statewide
+        .filter(row => row.GeoID != main.ctaid)  // only 1 demog row per CTZ Zone, so only filtering is Not Statewide
         .forEach((row) => {
             const choropleth_score = row[rankthemby];  // the control's selected value = a CHOROPLETH_OPTIONS "field" = a literal CSV column name
             ctascores[row.GeoID] = choropleth_score;
@@ -1936,7 +2101,7 @@ function performSearchMap (searchparams) {
     if (['Cases', 'AAIR'].indexOf(rankthemby) != -1) {  // the special case for AAIR/Cases incidence data
         DATA_CANCER
         .filter(row => row.GeoID != 'US')
-        .filter(row => row.GeoID != '10')
+        .filter(row => row.GeoID != main.ctaid)
         .filter(row => row.Years == searchparams.time && row.Cancer == searchparams.site && row.Sex == searchparams.sex)
         .forEach((row) => {
             let choropleth_score;
@@ -1954,7 +2119,7 @@ function performSearchMap (searchparams) {
     else {  // demographic data
         DATA_DEMOGS
         .filter(row => row.GeoID != 'US')
-        .filter(row => row.GeoID != '10')  // only 1 demog row per CTZ Zone, so only filtering is Not Statewide
+        .filter(row => row.GeoID != main.ctaid)  // only 1 demog row per CTZ Zone, so only filtering is Not Statewide
         .forEach((row) => {
             const choropleth_score = row[rankthemby];  // the control's selected value = a CHOROPLETH_OPTIONS "field" = a literal CSV column name
             ctascores[row.GeoID] = choropleth_score;
@@ -2025,7 +2190,7 @@ function performSearchMap (searchparams) {
 function performSearchUpdateDataDownloadLinks (searchparams) {
     const $downloadlink = $('#downloadoptions a[data-export="zonedata"]');
 
-    if (searchparams.ctaid == '10') {
+    if (searchparams.ctaid == main.ctaid) {
         $downloadlink.hide().prop('href', 'javascript:void(0);');
     }
     else {
