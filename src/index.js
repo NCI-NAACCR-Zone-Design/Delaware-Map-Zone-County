@@ -443,11 +443,11 @@ function initLoadInitialState () {
 
     // on page load, fill in the address box too BUT ALSO set its hasbeenchanged attribute so that performSearch() will zoom to the CTA Zone
     // there is behavior not to re-zoom the map if a non-address field was the cause, e.g. changing sex should not re-zoom the map
-    if (params.get('address')) {
-        const $searchwidgets = $('div.data-filters input[type="text"], div.data-filters select');
-        const $addrbox = $searchwidgets.filter('[name="address"]');
-        $addrbox.data('hasbeenchanged', true);
-    }
+    // if (params.get('address')) {
+    //     const $searchwidgets = $('div.data-filters input[type="text"], div.data-filters select');
+    //     const $addrbox = $searchwidgets.filter('[name="address"]');
+    //     $addrbox.data('hasbeenchanged', true);
+    // }
 
     // map overlays and chorpopleth choice, are managed via map controls
     if (params.get('overlays')) {
@@ -686,18 +686,22 @@ function initPrintPage () {
     $printbutton.data('ready-html', $printbutton.html() );  // fetch whatever the HTML is when the page loads, so we don't have to repeat ourselves here
     $printbutton.data('busy-html', '<i class="fa fa-clock"></i> Printing');
 
+    const $bottomTextElement = $('<div id="print-bottom-text">https://nci-naaccr-zone-design.github.io/Delaware-Map-Zone-County/</div>');
+
     window.addEventListener('beforeprint', function () {
         $mapdomnode.className = 'col-12';
         MAP.invalidateSize();
         $printbutton.html( $printbutton.data('busy-html') );
-
+        $incidencebarchart.css('width', '100%');
         $incidencebarchart.addClass('printing');
         window.dispatchEvent(new Event('resize'));
+        // Append the text to the body before printing
+        $('body').append($bottomTextElement);
     });
 
     window.addEventListener('afterprint', function () {
         $incidencebarchart.removeClass('printing');
-
+        $bottomTextElement.remove();
         $mapdomnode.className = originalclasslist;
         MAP.invalidateSize();
         $printbutton.html( $printbutton.data('ready-html') );
@@ -957,7 +961,7 @@ function initDataFilters () {
     if (getOptionCount('time') < 2) {  // some datasets have only 1 option, sop  showing this is silly
         $searchwidgets_time.closest('div.input-group').hide();
     }
-
+    $('#data-filters-address').val("2 The Circle, Georgetown, DE 19947");
     // part 2: add actions to the search widgets
     // the search widgets: select race/sex/cancer/time and trigger a search
     // some selections may need to force others, e.g. some cancer selections will force a sex selection
@@ -1262,7 +1266,7 @@ function performSearchReally (searchparams) {
     performSearchIncidenceReadout(searchparams);
     performSearchIncidenceBarChart(searchparams);
     // performSearchMap(searchparams);
-    performSearchUpdateDataDownloadLinks(searchparams);
+    // performSearchUpdateDataDownloadLinks(searchparams); // commented out until file downloads addressed
 }
 
 
