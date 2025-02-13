@@ -43,7 +43,7 @@
         top: 0;
         left: 15px;
         z-index: 100000;
-        width: 290px;
+        width: 420px;
 
         background-color: white;
 
@@ -54,6 +54,16 @@
             height: 67px;
             margin-right: 8px;
         }
+    }
+
+    #print-bottom-text {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        font-size: 12px; /* Adjust the font size as needed */
+        padding: 10px 0; /* Optional: Add padding to give some space */
+        page-break-before: always; /* Ensures it appears on a new page if necessary */
     }
 
     #logo-page2-print {
