@@ -71,9 +71,9 @@ var DATA_URL_PLACEGEOM = 'static/data/testPlaces.json';
 var SEARCHOPTIONS_CANCERSITE = [  // filter values for "cancer" field
     { value: 'AllSite', label: "All Cancer Sites" },
     { value: 'Prostate', label: "Prostate" },
-    { value: 'Lung', label: "Lung" },
+    { value: 'Lung', label: "Lung and Bronchus" },
     { value: 'Breast', label: "Female Breast" },
-    { value: 'CRC', label: "Colorectal" },
+    { value: 'CRC', label: "Colon and Rectum" },
     { value: 'Kidney', label: "Kidney and Renal Pelvis" },
     { value: 'NHL', label: "Non-Hodgkin Lymphoma" },
     { value: 'Urinary', label: "Urinary Bladder" },
