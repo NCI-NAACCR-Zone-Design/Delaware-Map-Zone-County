@@ -100,8 +100,8 @@ var SEARCHOPTIONS_SEX = [  // filter values for "sex" field
     { value: 'Female', label: "Female" },
 ];
 var SEARCHOPTIONS_TIME = [  // filter values for "years" field
-    { value: '05yrs', label: "5-Year: 2015-2019" },
-    { value: '10yrs', label: "10-Year: 2010-2019" },
+    { value: '05yrs', label: "5-Year: 2018-2022 " },
+    { value: '10yrs', label: "10-Year: 2013-2022" },
 ];
 var SEARCHOPTIONS_RACE = [  // field prefix for AAIR, LCI, UCI fields within the incidence row
     { value: '', label: "All Ethnicities" },
