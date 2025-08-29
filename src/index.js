@@ -17,29 +17,28 @@ require('./printing-leaflet-easyPrint.js');
 const SITE_CONSTANTS = {
     startingLocation: "2 The Circle, Georgetown, DE 19947", // Replace with your desired default location
     ctaid: 10, // Starting state for site to start up
-    // stateName: "Delaware", // The name of your state, project, or cancer registry. Commonly used with the phrase "Cancer Maps" after it, indicating the name of this website.
-    // numOfCancerSites: "25", // The number of cancer sites by which data may be searched. Usually the same as the number of SEARCHOPTIONS_CANCERSITE entries.
-    // numOfZones: "14", // The number of zones for your state.
-    // minZonePop: "50,000", // The minimum population of a zone in your state/registry catchment area. Used in a statement describing zones.
-    // maxZonePop: "150,000", // The maximum population of a zone in your state/registry catchment area. Used in a statement describing zones.
-    // minTractsPerZone: "1,000", // The minimum number of census tracts forming any zone. Used in a statement describing zones.
-    // maxTractsPerZone: "100,000", // The maximum number of census tracts forming any zone. Used in a statement describing zones.
-    // raceList: [
-    //     "non-Hispanic White",
-    //     "non-Hispanic Black",
-    //     "non-Hispanic Asian/Pacific Islander",
-    //     "non-Hispanic American Indian/Alaska Native",
-    //     "Hispanic"
-    // ], // A list of the races/ethnicities by which data may be displayed. This should reflect the SEARCHOPTIONS_RACE entries.
-    // reportingMinCases: "16", // The minimum number of cancer cases in a zone to be reported (i.e., suppression threshold).
-    // registry: "test", //Name of registry that will be listed under “Project Team” in the About section.
-    // registryLink: "https://www.google.com", //A hyperlink URL to this website's parent agency, cancer registry, etc. The URL associated with the text specified in ‘registry’ field above.
-    // fundingSource: "This is supported through funding", //A statement/description of who funded the website. Displayed in the About section.
-    // citationInfo: "This is where you put your citation info", //A statement/description of how this website should be cited in literature.
-    // nationalCancerDataSource: "this is your national cancer data source info", //A statement/description of the national cancer data source, including data years. This should be reviewed with subsequent data updates to verify whether it needs to be updated as well (e.g., during annual data updates). An example of this statement applicable to national cancer data through 2018 is: "National incidence data come from the National Program of Cancer Registries and Surveillance, Epidemiology, and End Results SEER*Stat Database: U.S. Cancer Statistics Incidence Analytic file - 1998-2018. United States Department of Health and Human Services, Centers for Disease Control and Prevention. Released June 2021, based on the 2020 submission."
-    // aboutBlurb: "This is your about blurb", //A statement/description of the website, in "What is the XXX Cancer Registry" section of the FAQ.
-    // incidenceDataDate: "2016", //Last year of available incidence data. Used in one of the FAQs.
-    // sociodemographicDataDateRange: "2012-2016", //Data range for ACS data used. Used in one of the FAQs.
+    stateName: "Delaware", // The name of your state, project, or cancer registry. Commonly used with the phrase "Cancer Maps" after it, indicating the name of this website.
+    numOfCancerSites: "23", // The number of cancer sites by which data may be searched. Usually the same as the number of SEARCHOPTIONS_CANCERSITE entries.
+    numOfZones: "15", // The number of zones for your state.
+    minZonePop: "54,013", // The minimum population of a zone in your state/registry catchment area. Used in a statement describing zones.
+    maxZonePop: "67,693", // The maximum population of a zone in your state/registry catchment area. Used in a statement describing zones.
+    minTractsPerZone: "8", // The minimum number of census tracts forming any zone. Used in a statement describing zones.
+    maxTractsPerZone: "13", // The maximum number of census tracts forming any zone. Used in a statement describing zones.
+    raceList: [
+        "non-Hispanic White",
+        "non-Hispanic Black",
+        "Hispanic"
+    ], // A list of the races/ethnicities by which data may be displayed. This should reflect the SEARCHOPTIONS_RACE entries.
+    reportingMinCases: "16", // The minimum number of cancer cases in a zone to be reported (i.e., suppression threshold).
+    registry: "Delaware Cancer Registry", //Name of registry that will be listed under “Project Team” in the About section.
+    registryLink: "https://dhss.delaware.gov/dph/dcr/home.html", //A hyperlink URL to this website's parent agency, cancer registry, etc. The URL associated with the text specified in ‘registry’ field above.
+    fundingSource: "The Delaware Cancer Registry is supported by the National Program of Cancer Registries (NPCR) of the Centers for Disease Control and Prevention (CDC), Delaware Cancer Consortium, and the Division of Public Health, Comprehensive Cancer Control Program.", //A statement/description of who funded the website. Displayed in the About section.
+    citationInfo: "Delaware Cancer Maps, based on November 2021 submission data: Delaware Cancer Registry, August 2023.", //A statement/description of how this website should be cited in literature.
+    nationalCancerDataSource: `National Program of Cancer Registries and Surveillance, Epidemiology and End Results Program SEER*Stat Database: NPCR and SEER Incidence - U.S. Cancer Statistics Public Use Research Database, 2024 Submission (2001-2022). United States Department of Health and Human Services, Centers for Disease Control and Prevention and National Cancer Institute. Released June 2025. Accessed at <a href="https://www.cdc.gov/cancer/uscs/public-use" target="_blank" rel="noopener noreferrer">www.cdc.gov/cancer/uscs/public-use</a>.`, //A statement/description of the national cancer data source, including data years. This should be reviewed with subsequent data updates to verify whether it needs to be updated as well (e.g., during annual data updates). An example of this statement applicable to national cancer data through 2018 is: "National incidence data come from the National Program of Cancer Registries and Surveillance, Epidemiology, and End Results SEER*Stat Database: U.S. Cancer Statistics Incidence Analytic file - 1998-2018. United States Department of Health and Human Services, Centers for Disease Control and Prevention. Released June 2021, based on the 2020 submission."
+    aboutBlurb: `The Delaware Cancer Registry (DCR) collects information about new cancer cases, cancer treatment and cancer deaths. All hospitals, laboratories, physicians and other health care providers are required by state law to report all newly diagnosed or treated cancer cases to the Registry. Registry data is used to monitor cancer trends, promote research to increase survival, guide policy planning, and respond to Delaware residents’ cancer concerns. Patient information is kept absolutely confidential.
+                For more information about what cancer cases are reportable to the DCR, please visit: <a target="_blank" href="https://dhss.delaware.gov/dph/dcr/files/delawarecancerregulations.pdf">here</a>.`, //A statement/description of the website, in "What is the XXX Cancer Registry" section of the FAQ.
+    incidenceDataDate: "2016", //Last year of available incidence data. Used in one of the FAQs.
+    sociodemographicDataDateRange: "2012-2016", //Data range for ACS data used. Used in one of the FAQs.
     MAP_BBOX: [[38.5268, -74.2317], [39.8108, -75.5277]],  // [[s, w], [n, e]] Starting Location
     MIN_ZOOM: 6,
     MAX_ZOOM: 15,
@@ -463,12 +462,12 @@ function initCitationInfo(text) {
 
 function initNationalCancerDataSourceInfo(text) {
     const elements = document.querySelectorAll('.nationalCancerDataSource');
-    if (text){ elements.forEach(element => { element.innerText = text })}
+    if (text){ elements.forEach(element => { element.innerHTML = text })}
 }
 
 function initAboutBlurb(text) {
     const elements = document.querySelectorAll('.aboutBlurb');
-    if (text){ elements.forEach(element => { element.innerText = text })}
+    if (text){ elements.forEach(element => { element.innerHTML = text })}
 }
 
 function initIncidenceDataDate(text) {
