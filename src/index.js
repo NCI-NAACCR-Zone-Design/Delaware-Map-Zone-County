@@ -67,8 +67,8 @@ var SEARCHOPTIONS_TYPE = [ // filter values for zone or county
 ]
 
 var SEARCHOPTIONS_TIME = [  // filter values for "years" field
-    { value: '05yrs', label: "5-Year: 2015-2019" },
-    { value: '10yrs', label: "10-Year: 2010-2019" },
+    { value: '05yrs', label: "5-Year: 2018-2022" },
+    { value: '10yrs', label: "10-Year: 2013-2022" },
 ];
 
 var SEARCHOPTIONS_CANCERSITE = [  // filter values for "cancer" field
@@ -176,7 +176,13 @@ var DEMOGRAPHIC_TABLES = [
         rows: [
             { field: 'PctDisabled', label: "% With a Disability", format: 'percent', tooltip_id: 'PctDisabled' }, 
         ],
-    }
+    },
+    {
+        title: "Nativity in US",
+        rows: [
+            { field: 'Pct_forborn', label: "% Foreign Born", format: 'percent', tooltip_id: 'Pct_forborn' },
+        ],
+    },
 ];
 
 // the Leaflet styles for those choropleth options defined in CHOROPLETH_OPTIONS below
